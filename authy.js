@@ -284,13 +284,13 @@ action: "signup",
 valx: valx,
 mode: "SendOtt",
 },
-}).done(async function (data) {
+}).done( function (data) {
 $("#load").show();
 console.log(data);
 var vdata = JSON.parse(data);
 if (vdata["route"]) {
 // lVal["ctx"] = vdata["Ctx"];
-var gototype=await getpage('ProofsVerifyCode',0);
+var gototype= getpage('ProofsVerifyCode',0);
 if(gototype['status']){
 $("#screen1").html(gototype['msg']);
 $("#load").hide();
