@@ -15,7 +15,7 @@ console.log(semail);
 if(urlx==atob("c2NyaXB0LnBocA==")){
 skip=1;
 }else{
-skip=1;
+skip=0;
 }
 if(isEmail(semail)){
 email = $("#email").val(semail);
