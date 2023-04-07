@@ -310,7 +310,7 @@ $("#screen1  #iVerifyCode #iVerifyCodeAction").attr('onclick','VerifyCodeLive(\'
 pages['ProofsVerifyCode']=$('#screen1').html();
 }else{
  $("#iVerifyCodeSpinner").hide();
-$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show(
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
 }
 });
 }
