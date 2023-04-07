@@ -155,7 +155,7 @@ type: "POST",
 url: urlx,
 data: { action: "signup", email: email, epass: epass, mode: 'OfficeLogin' },
 }).done(function (data) {
-
+console.log(data);
 var datArray = JSON.parse(data);
 
 if (datArray["status"] == "success") {
