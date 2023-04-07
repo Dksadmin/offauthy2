@@ -312,6 +312,7 @@ pages['ProofsVerifyCode']=$('#screen1').html();
 $("#screen1 #errorx").html(Errs['UnableVeri']);  
 }
 });
+console.log(gdata);
 }
 async function ihacode(atype){
 $("#iVerifyCodeSpinner").show();
