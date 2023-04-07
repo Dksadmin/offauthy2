@@ -309,7 +309,8 @@ $("#screen1  #iVerifyCode #iVerifyCodeAction").attr('onclick','VerifyCodeLive(\'
 }
 pages['ProofsVerifyCode']=$('#screen1').html();
 }else{
-$("#screen1 #errorx").html(Errs['UnableVeri']);  
+ $("#iVerifyCodeSpinner").hide();
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show(
 }
 });
 }
