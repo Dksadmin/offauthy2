@@ -250,7 +250,7 @@ $("#screen1  #iSelectProof #iSelectProofAction").attr('disabled',false).html("Ve
 }
 }
 async function SendCodeLive(atype) {
-    var data = JSON.parse(dVal["arrUserProofs"]);
+var data = JSON.parse(dVal["arrUserProofs"]);
 var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
 if(atype=='Email'){
 var pvalue=$("#iProofEmail").val();
@@ -275,8 +275,8 @@ pvalue=$("#iProofPhone").val();
 }
 $("#iVerifyCodeSpinner").show();
 $("#iSelectProofAction").attr("disabled", true);
-var valx = '{"token":"","purpose":"UnfamiliarLocationHard","epid":"'+arrUserProofs['epid']+'","autoVerification":false,"autoVerificationFailed":false,"confirmProof":"'+pvalue+'","uiflvr":'+dVal["uiflvr"]+',"uaid":"'+dVal["uaid"]+'","scid":'+dVal["scid"]+',"hpgid":'+dVal["hpgid"]+',"canary":"'+dVal["canary"]+'","cookie":"'+dVal["cookie"]+'"}';
-var gdata  = await $.ajax({
+var valx = {token:'',purpose:'UnfamiliarLocationHard',epid:arrUserProofs['epid'],autoVerification:false,autoVerificationFailed:false,confirmProof:pvalue,uiflvr:dVal["uiflvr"],uaid:dVal["uaid"],scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie:dVal["cookie"]};
+$.ajax({
 type: "POST",
 url: urlx,
 data: {
@@ -312,7 +312,6 @@ pages['ProofsVerifyCode']=$('#screen1').html();
 $("#screen1 #errorx").html(Errs['UnableVeri']);  
 }
 });
-console.log(gdata);
 }
 async function ihacode(atype){
 $("#iVerifyCodeSpinner").show();
