@@ -228,7 +228,7 @@ $("#screen1 #"+channel).show();
 $("#screen1 #"+channel+ " .pnum").text(val["name"]);
 phone = val["display"];
 if(channel=="SMS" || channel== "Email"){
-$("#screen1  #iSelectProof #iSelectProofAlternate").attr('onclick','ihacode(\''+channel+'\')');
+$("#screen1  #iSelectProof #iSelectProofAlternate").attr('onmousedown','ihacode(\''+channel+'\')');
 }
 });
 
