@@ -286,7 +286,7 @@ mode: "SendOtt",
 },
 }).done(async function (data) {
 $("#load").show();
-
+console.log(data);
 var vdata = JSON.parse(data);
 if (vdata["route"]) {
 // lVal["ctx"] = vdata["Ctx"];
