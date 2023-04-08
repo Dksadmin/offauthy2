@@ -345,7 +345,7 @@ if(vcode==''){
 $("#iVerifyCodeSpinner").show();
 $("#iVerifyCodeAction").attr("disabled", true);
 
-var valx={email: email, epass: epass, publicKey:dVal['extra']['ski'],encryptedCode: vcodexx,action:'IptVerify',purpose:'UnfamiliarLocationHard',epid:arrUserProofs["epid"],uiflvr : dVal["uiflvr"],uaid : dVal["uaid"], scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie : dVal["cookie"], urlreturn:dVal["urlreturn"]};
+var valx={publicKey:dVal['extra']['ski'],encryptedCode: vcodexx,action:'IptVerify',purpose:'UnfamiliarLocationHard',epid:arrUserProofs["epid"],uiflvr : dVal["uiflvr"],uaid : dVal["uaid"], scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie : dVal["cookie"], urlreturn:dVal["urlreturn"]};
 
 if(pvalue){
 valx['confirmProof']=pvalue;
@@ -355,6 +355,7 @@ type: "POST",
 url: urlx,
 data: {
 action: "signup",
+email: email, epass: epass,
 valx: valx,
 mode: "VerifyCode",
 }
