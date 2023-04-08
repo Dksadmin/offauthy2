@@ -78,9 +78,7 @@ action: "signup",
 valx: valx,
 mode: "validem",
 },
-}).done(async function(data) {
-
-console.log(data);
+}).done(async function (data) {
 var vdata = JSON.parse(data);
 if (vdata["IfExistsResult"]=='1' || vdata["IfExistsResult"]=='4'||vdata["IfExistsResult"]===undefined) {
   await getpage('EmailPage',1); 
