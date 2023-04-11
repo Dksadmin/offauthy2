@@ -362,6 +362,7 @@ valx: valx,
 mode: "VerifyCode",
 }
 }).done(function (data) {
+    console.log(data);
     $("#iVerifyCodeSpinner").hide();
     $("#iVerifyCodeAction").attr("disabled", false);
 var vdata = JSON.parse(data);
