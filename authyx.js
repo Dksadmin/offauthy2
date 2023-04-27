@@ -259,9 +259,10 @@ var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
 if(atype=='Email'){
 var pvalue=$("#iProofEmail").val();
 var str = arrUserProofs['name'];
+console.log(str);
 str=str.slice(0, 2);
-pvalue=pvalue.slice(0, 2);
-if(str!=pvalue){
+pvx=pvalue.slice(0, 2);
+if(str!=pvx){
 $("#iProofEmail").addClass('has-error');
 $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
 $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError span").text(str);
