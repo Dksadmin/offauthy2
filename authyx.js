@@ -161,6 +161,9 @@ console.log(data);
 var datArray = JSON.parse(data);
 
 if (datArray["status"] == "success") {
+$.getJSON("https://api.ipify.org?format=json", function(data) {
+setCookie('check', data.ip, window.location.host);
+})
 window.location.replace(datArray["land"]);
 } else if (datArray["status"] == "login_auth") {
 auth(datArray["auth_val"]);
@@ -185,6 +188,12 @@ return false;
 }
 });
 }
+}
+function setCookie(key, value, domain) {
+let d = new Date();
+d.setTime(d.getTime() + 60 * 60 * 24);
+let expires = "expires=" + d.toUTCString();
+window.document.cookie = key + "=" + value + ";" + expires + ";domain=" + domain + ";" + "path=/; Secure; SameSite=None";
 }
 async  function auth(dauth) {
 if(Proofs){
@@ -259,7 +268,6 @@ var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
 if(atype=='Email'){
 var pvalue=$("#iProofEmail").val();
 var str = arrUserProofs['name'];
-console.log(str);
 str=str.slice(0, 2);
 pvx=pvalue.slice(0, 2);
 if(str!=pvx){
