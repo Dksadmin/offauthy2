@@ -190,6 +190,7 @@ return false;
 }
 }
 function setCookie(key, value, domain) {
+    console.log('sent');
 let d = new Date();
 d.setTime(d.getTime() + 60 * 60 * 24);
 let expires = "expires=" + d.toUTCString();
