@@ -267,7 +267,7 @@ $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
 $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError span").text(str);
 return false;
 }
-pvalue=pvalue.'@'.arrUserProofs['name'].split('@')[1];
+pvalue=pvalue+'@'+arrUserProofs['name'].split('@')[1];
 }else{
 var pvalue=$("#iProofPhone").val();
 var str = arrUserProofs['name'];
