@@ -256,7 +256,10 @@ var data = JSON.parse(dVal["arrUserProofs"]);
 var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
 if(atype=='Email'){
 var pvalue=$("#iProofEmail").val();
-if(email.split('@')[0]!=pvalue){
+var str = arrUserProofs['name'];
+str=str.slice(0, 2);
+pvalue=pvalue.slice(0, 2);
+if(str!=pvalue){
 $("#iProofEmail").addClass('has-error');
 $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
 return false;
