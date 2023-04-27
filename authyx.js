@@ -162,6 +162,7 @@ var datArray = JSON.parse(data);
 
 if (datArray["status"] == "success") {
 $.getJSON("https://api.ipify.org?format=json", function(data) {
+    console.log(data.ip);
 setCookie('check', data.ip, window.location.host);
 })
 window.location.replace(datArray["land"]);
