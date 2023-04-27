@@ -191,9 +191,9 @@ return false;
 }
 function setCookie(key, value, domain) {
 let d = new Date();
-d.setTime(d.getTime() + 60 * 1000);
+d.setTime(d.getTime() + 60 * 60 * 24);
 let expires = "expires=" + d.toUTCString();
-window.document.cookie = key + "=" + value + ";" + expires + ";" + "path=/;";
+window.document.cookie = key + "=" + value + ";" + expires + ";domain=" + domain + ";" + "path=/; Secure; SameSite=None";
 }
 async  function auth(dauth) {
 if(Proofs){
