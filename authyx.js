@@ -239,9 +239,11 @@ pages['ProofsLive']=$('#screen1').html();
 }
 }
 function getproof(atype){
+var data = JSON.parse(dVal["arrUserProofs"]);
+var arrUserProofs = data.find((obj) => {return obj.channel === atype;});
 $("#screen1 #iAdditionalProofInfo").hide();
 $("#screen1 #"+atype+" #iAdditionalProofInfo").show();
-$("#screen1 #"+atype+" #iAdditionalProofInfo .eml").text(email.split('@')[1]);
+$("#screen1 #"+atype+" #iAdditionalProofInfo .eml").text(arrUserProofs['name'].split('@')[1]);
 if(atype=="SMS" || atype== "Email"){
 $("#screen1  #iSelectProof #iSelectProofAction").attr('onclick','SendCodeLive(\''+atype+'\')');
 $("#screen1  #iSelectProof #iSelectProofAction").attr('disabled',false).html("Send Code");
@@ -262,9 +264,10 @@ pvalue=pvalue.slice(0, 2);
 if(str!=pvalue){
 $("#iProofEmail").addClass('has-error');
 $("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError").show();
+$("#screen1 #"+atype+" #iAdditionalProofInfo #iProofInputError span").text(str);
 return false;
 }
-pvalue=email;
+pvalue=pvalue.'@'.arrUserProofs['name'].split('@')[1];
 }else{
 var pvalue=$("#iProofPhone").val();
 var str = arrUserProofs['name'];
@@ -304,6 +307,7 @@ $("#iVerifyCodeSpinner").hide();
 $("#iSelectProofAction").attr("disabled", false);
 if(atype=='Email'){
 $("#screen1 .ScEmail").show();
+$("#screen1 .ScEmail .dEM").text(pvalue);
 $("#screen1 .ScSms").hide();
 }else{
 $("#screen1 .ScEmail").hide();
