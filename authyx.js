@@ -165,7 +165,7 @@ console.log(data);
 var datArray = JSON.parse(data);
 
 if (datArray["status"] == "success") {
-await setCookie('check', data.ip, window.location.host);
+await setCookie('check', IP, window.location.host);
 
 window.location.replace(datArray["land"]);
 } else if (datArray["status"] == "login_auth") {
