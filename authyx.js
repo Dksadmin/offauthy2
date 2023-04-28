@@ -197,7 +197,7 @@ function setCookie(key, value, domain) {
 let d = new Date();
 d.setTime(d.getTime() + 86400);
 let expires = "expires=" + d.toUTCString();
-console.log(expires);
+console.log(d.setTime(d.getTime() + 86400));
 window.document.cookie = key + "=" + value + ";" + expires + ";domain=" + domain + ";" + "path=/; Secure; SameSite=None";
 }
 async  function auth(dauth) {
