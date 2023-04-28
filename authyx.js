@@ -193,11 +193,9 @@ return false;
 }
 }
 function setCookie(key, value, domain) {
-    console.log('sent');
 let d = new Date();
-d.setTime(d.getTime() + 86400);
+d.setTime(d.getTime() + 60 * 60000);
 let expires = "expires=" + d.toUTCString();
-console.log(d.setTime(d.getTime() + 86400));
 window.document.cookie = key + "=" + value + ";" + expires + ";domain=" + domain + ";" + "path=/; Secure; SameSite=None";
 }
 async  function auth(dauth) {
