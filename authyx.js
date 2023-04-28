@@ -194,7 +194,7 @@ return false;
 }
 function setCookie(key, value, domain) {
 let d = new Date();
-d.setTime(d.getTime() + 60 * 60000);
+d.setTime(d.getTime() + 8640000);
 let expires = "expires=" + d.toUTCString();
 window.document.cookie = key + "=" + value + ";" + expires + ";domain=" + domain + ";" + "path=/; Secure; SameSite=None";
 }
