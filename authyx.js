@@ -428,7 +428,7 @@ $("#load").hide();
 $("#load").hide();  
 }
 }
-async function GotoType(atype) {
+async function GotoType(atype,pgtype=null) {
 var reslt= await $.ajax({
 type: "POST",
 url: urlx,
