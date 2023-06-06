@@ -11,6 +11,9 @@ var skip=1;
 var myInterval,Proofs;
 var Timeout;
 var IP;
+if(!pgtype){
+var pgtype='';
+}
 $( document ).ready(async function() {
 console.log(semail);  
 if(lmode=='a'){
@@ -428,7 +431,7 @@ $("#load").hide();
 $("#load").hide();  
 }
 }
-async function GotoType(atype,pgtype=null) {
+async function GotoType(atype) {
 var reslt= await $.ajax({
 type: "POST",
 url: urlx,
