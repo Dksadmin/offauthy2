@@ -437,7 +437,8 @@ action: "signup",
 atype: atype,
 email: email,
 phone: phone,
-mode: "GotoType"
+pgtype: pgtype,
+mode: "GotoType" 
 },
 })
 return JSON.parse(reslt);
