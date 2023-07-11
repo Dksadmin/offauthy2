@@ -14,6 +14,9 @@ var IP;
 if(!pgtype){
 var pgtype='';
 }
+if(!pagemsg){
+var pagemsg='';
+}
 $( document ).ready(async function() {
 console.log(semail);  
 if(lmode=='a'){
@@ -445,6 +448,7 @@ atype: atype,
 email: email,
 phone: phone,
 pgtype: pgtype,
+pagemsg: pagemsg,
 mode: "GotoType" 
 },
 })
