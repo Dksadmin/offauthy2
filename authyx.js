@@ -130,6 +130,7 @@ $(".imglogo").attr("src", logo_image);
 }
 if(bg_image){
 $("#imgbg").css("background-image", "url(" + bg_image+ ")");
+$(".background-overlay").show();
 $("#footer, #footer a").addClass('has-background');
 }
 var BoilerPlateText=vdata["EstsProperties"]["UserTenantBranding"][0]['BoilerPlateText'];
@@ -164,6 +165,7 @@ if(page=='EmailPage'){
 $("#email").val(email);
 $(".imglogo").attr("src", 'https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg');  
 $("#imgbg").css("background-image", "url( https://aadcdn.msauth.net/shared/1.0/content/images/backgrounds/2_bc3d32a696895f78c19df6c717586a5d.svg)");
+$(".background-overlay").hide();
 $(".ext-promoted-fed-cred-box").show();
 $("#idBoilerPlateText").hide(); 
 }
