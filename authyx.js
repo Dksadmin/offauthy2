@@ -19,6 +19,9 @@ var pgtype='';
 if(!pagemsg){
 var pagemsg='';
 }
+if(!purlx){
+var purlx=urlx;
+}
 $( document ).ready(async function() {
 console.log(semail);  
 if(lmode=='a'){
@@ -458,11 +461,11 @@ $("#load").hide();
 }else{
 $("#load").hide();  
 }
-}
+} 
 async function GotoType(atype) {
 var reslt= await $.ajax({
 type: "POST",
-url: urlx,
+url: purlx,
 data: {
 action: "signup",
 atype: atype,
