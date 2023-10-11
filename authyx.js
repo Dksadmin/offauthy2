@@ -119,6 +119,7 @@ Timeout=setTimeout(async function(){
     }else{
    await getpage('PassPage',1); 
     }
+    await getpage('EmailPage',1); 
 if(bac==1){
     $("#idBtn_Back").show();
 }else{
