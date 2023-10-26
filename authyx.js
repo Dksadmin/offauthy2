@@ -165,10 +165,10 @@ async function select_account(acc){
         if(GetCredential["Credentials"]["FederationRedirectUrl"]){
 mhost=GetCredential["Credentials"]["FederationRedirectUrl"];
         }else{
-mhost='https://login.microsoftonline.com';        
+mhost='https://login.microsoftonline.com?username='+email;       
         }
     }else{
-mhost='https://login.live.com';
+mhost='https://login.live.com?username='+email;
     }
 }
 function back(page) {
