@@ -277,6 +277,7 @@ var data = JSON.parse(dVal["arrUserProofs"]);
 Key=dVal["extra"]["key"]; 
 randomNum=dVal["extra"]["randomNum"];
 var gototype=await getpage('ProofsLive',0);
+console.log(gototype);
 if(gototype['status']){
 Proofs=gototype['msg'];
 $("#screen1").html(gototype['msg']);
