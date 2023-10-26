@@ -49,8 +49,9 @@ if(dis){
 $("#screen1").html(scrn['msg']);
 
 }else{
-//return scrn;  
- pages[page]=scrn['msg'];  
+ 
+ pages[page]=scrn['msg']; 
+ return scrn;  
 }
 $("#load").hide();
 }
