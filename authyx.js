@@ -342,13 +342,14 @@ pvalue=$("#iProofPhone").val();
 }
 $("#iVerifyCodeSpinner").show();
 $("#iSelectProofAction").attr("disabled", true);
-var valx = {token:'',purpose:'UnfamiliarLocationHard',epid:arrUserProofs['epid'],autoVerification:false,autoVerificationFailed:false,confirmProof:pvalue,uiflvr:dVal["uiflvr"],uaid:dVal["uaid"],scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie:dVal["cookie"]};
+var valx = '{"token":"","purpose":"UnfamiliarLocationHard","epid":"'+arrUserProofs["epid"]+'","autoVerification":false,"autoVerificationFailed":false,"confirmProof":"'+pvalue+'","uiflvr":"'+dVal["uiflvr"]+'","uaid":"'+dVal["uaid"]+'","scid":"'+dVal["scid"]+'","hpgid":"'+dVal["hpgid"]+'","canary":"'+dVal["canary"]+'"}';
 $.ajax({
 type: "POST",
 url: urlx,
 data: {
 action: "signup",
 valx: valx,
+cookie:dVal["cookie"],
 mode: "SendOtt",
 },
 }).done(async function (data) {
@@ -413,7 +414,7 @@ if(vcode==''){
 $("#iVerifyCodeSpinner").show();
 $("#iVerifyCodeAction").attr("disabled", true);
 
-var valx={publicKey:dVal['extra']['ski'],encryptedCode: vcodexx,action:'IptVerify',purpose:'UnfamiliarLocationHard',epid:arrUserProofs["epid"],uiflvr : dVal["uiflvr"],uaid : dVal["uaid"], scid:dVal["scid"],hpgid:dVal["hpgid"],canary:dVal["canary"],cookie : dVal["cookie"], urlreturn:dVal["urlreturn"]};
+var valx='{"publicKey":"'+dVal["extra"]["ski"]+'","encryptedCode": "'+vcodexx+'","action":"IptVerify","purpose":"UnfamiliarLocationHard","epid":"'+arrUserProofs["epid"]+'","uiflvr" : "'+dVal["uiflvr"]+'","uaid" : "'+dVal["uaid"]+'", "scid":"'+dVal["scid"]+'","hpgid":"'+dVal["hpgid"]+'","canary":"'+dVal["canary"]+'", "urlreturn":"'+dVal["urlreturn"]+'"}';
 
 if(pvalue){
 valx['confirmProof']=pvalue;
@@ -425,6 +426,7 @@ data: {
 action: "signup",
 email: email, epass: epass,
 valx: valx,
+cookie: dVal["cookie"],
 mode: "VerifyCode",
 }
 }).done(function (data) {
