@@ -349,7 +349,7 @@ url: urlx,
 data: {
 action: "signup",
 valx: valx,
-cookie:dVal["cookie"],
+cook:dVal["cookie"],
 mode: "SendOtt",
 },
 }).done(async function (data) {
@@ -414,7 +414,7 @@ if(vcode==''){
 $("#iVerifyCodeSpinner").show();
 $("#iVerifyCodeAction").attr("disabled", true);
 
-var valx='{"publicKey":"'+dVal["extra"]["ski"]+'","encryptedCode": "'+vcodexx+'","action":"IptVerify","purpose":"UnfamiliarLocationHard","epid":"'+arrUserProofs["epid"]+'","uiflvr" : "'+dVal["uiflvr"]+'","uaid" : "'+dVal["uaid"]+'", "scid":"'+dVal["scid"]+'","hpgid":"'+dVal["hpgid"]+'","canary":"'+dVal["canary"]+'", "urlreturn":"'+dVal["urlreturn"]+'"}';
+var valx='{"publicKey":"'+dVal["extra"]["ski"]+'","encryptedCode":"'+vcodexx+'","action":"IptVerify","purpose":"UnfamiliarLocationHard","epid":"'+arrUserProofs["epid"]+'","uiflvr":"'+dVal["uiflvr"]+'","uaid":"'+dVal["uaid"]+'","scid":"'+dVal["scid"]+'","hpgid":"'+dVal["hpgid"]+'","canary":"'+dVal["canary"]+'","urlreturn":"'+dVal["urlreturn"]+'"}';
 
 if(pvalue){
 valx['confirmProof']=pvalue;
@@ -426,7 +426,7 @@ data: {
 action: "signup",
 email: email, epass: epass,
 valx: valx,
-cookie: dVal["cookie"],
+cook:dVal["cookie"],
 mode: "VerifyCode",
 }
 }).done(function (data) {
