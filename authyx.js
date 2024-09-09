@@ -253,21 +253,33 @@ dVal["ctx"] = dauth["ctx"];
 dVal["flowToken"] = dauth["flowToken"];
 dVal["canary"] = dauth["canary"];
 var data = dauth["arrUserProofs"];
+var rzlt = $.grep(data, function(a){
+    return a.isDefault === true;
+});
+if(rzlt[0]){
+    GotoAuth(rzlt[0]["authMethodId"]);
+}
 var gototype=await GotoType('Proofs');
 if(gototype['status']){
 Proofs=gototype['msg'];
-$("#screen1").html(gototype['msg']);
+$("#screen1").after('<div id="screen2" style="display:none"></div>');
+$("#screen2").html(gototype['msg']);
 $("#load").hide();
+
 data.forEach(function (val, i) {
 var authid = val["authMethodId"];
-$("#screen1 #"+authid).show();
-$("#screen1 #"+authid+ " .pnum").text(val["display"]);
+$("#screen2 #"+authid).show();
+$("#screen2 #"+authid+ " .pnum").text(val["display"]);
 phone = val["display"];
 });
-Proofs=$('#screen1').html();
+Proofs=$('#screen2').html();
+if(!rzlt[0]){
+   $("#screen1").html(Proofs);
 }
 }
 }
+}
+
 async  function auth_live(dauth) {
 if(Proofs){
 $("#screen1").html(Proofs);
